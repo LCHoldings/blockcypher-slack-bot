@@ -1,0 +1,7 @@
+{
+    "exec": "concurrently \"npx tsc --watch\" \"ts-node src/index.ts --host\"",
+    "ext": "ts",
+    "watch": [
+        "src"
+    ]
+}
