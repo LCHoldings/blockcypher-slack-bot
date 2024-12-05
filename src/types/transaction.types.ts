@@ -18,6 +18,7 @@ export default interface Transaction {
     vout_sz: number;
     confirmations: number;
     confidence: number;
+    currency: string;
     inputs: {
         prev_hash: string;
         output_index: number;

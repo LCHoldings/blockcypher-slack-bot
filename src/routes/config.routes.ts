@@ -1,5 +1,7 @@
 import express, { Request, Response } from "express";
-import { getTransaction } from "../functions";
+import { getTransaction, dateToLink, convertPrefenceToEmoji, addDecimal } from "../functions";
+import { Transaction } from "../types";
+import axios from "axios";
 
 export const Router = express.Router()
 
@@ -11,23 +13,47 @@ Router.get("/status", async (req: Request, res: Response) => {
     }).status(200);
 });
 
-// Get all schools within a municipality
-Router.post("/get-transaction", async (req: Request, res: Response) => {
+Router.post("/get-transaction", async (req: Request, res: Response): Promise<void> => {
     try {
         const { text } = req.body;
-        const [transactionCurrency, transactionId] = text?.split(" ") || [];
-        console.log(transactionCurrency, transactionId);
+        var [firstParam, isChannel] = text?.split(" ") || [];
 
-        if (!transactionCurrency || !transactionId) {
+        if (!firstParam) {
             res.status(400).send("Invalid parameters");
             return;
         }
 
-        const transaction = await getTransaction(transactionCurrency, transactionId);
+        const transaction: Transaction | string = await getTransaction(firstParam);
+
+        if (typeof transaction === "string") {
+            res.send({
+                response_type: "ephemeral",
+                text: "There was an error fetching transaction: \n ```" + transaction + "```"
+            }).status(500);
+            return;
+        }
+
+        const inputs = transaction.inputs.map(input => input.addresses).join(", ");
+        const outputs = transaction.outputs.map(output => output.addresses).join(", ");
 
         res.send({
-            response_type: "in_channel",
-            text: `Transaction: \n\`\`\`${JSON.stringify(transaction, null, 2)}\`\`\``
+            response_type: `${isChannel == undefined ? "ephemeral" : "in_channel"}`,
+            type: "mrkdwn",
+            text: `<${`https://live.blockcypher.com/${transaction.currency}/tx/${transaction.hash}?includeConfidence=true|Transaction Information`}>:
+>*Block Hash:* \`${transaction.block_hash}\`
+>*Transaction Hash:* \`${transaction.hash}\`
+>*Addresses:* \`${transaction.addresses}\`
+>*Total:* ${addDecimal(transaction.currency, transaction.total)} ${transaction.currency.toUpperCase()}
+>*Fees:* ${addDecimal(transaction.currency, transaction.fees)} ${transaction.currency.toUpperCase()}
+>*Miner Preference:* ${convertPrefenceToEmoji(transaction.preference)}
+>*Relayed By:* \`${transaction.relayed_by || "Not Available"}\`
+>*Confirmed:* ${dateToLink(transaction.confirmed) || "Not Confirmed"}
+>*Received:* ${dateToLink(transaction.received)}
+>*Confirmations:* ${transaction.confirmations > 6 ? "6+" : transaction.confirmations + " / 6"}
+>*Confidence:* ${transaction.confidence == null ? "Not Available" : (transaction.confidence * 100) + "%"}
+>*Inputs:* \`${inputs || "Not Available"}\`
+>*Outputs:* \`${outputs || "Not Available"}\`
+            `
         }).status(200);
     } catch (error) {
         res.send({
