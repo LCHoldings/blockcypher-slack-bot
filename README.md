@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/lcholdings/blockcypher-slack-bot">
-    <img src="screenshots/logo.png" alt="Logo" style="border-radius: 10px" width="80" height="80">
+    <img src="https://raw.githubusercontent.com/LCHoldings/blockcypher-slack-bot/refs/heads/main/screenshots/logo.png" alt="Logo" style="border-radius: 10px" width="80" height="80">
   </a>
 
   <h3 align="center">BlockCypher Slack Bot</h3>
@@ -36,7 +36,7 @@
 <!-- ABOUT THE PROJECT -->
 ## 📝 About The Project
 
-![Example Usage](screenshots/screenshot1.png)
+![Example Usage](https://raw.githubusercontent.com/LCHoldings/blockcypher-slack-bot/refs/heads/main/screenshots/screenshot1.png)
 
 I made this project to learn more about the Slack API and how to create a Slack bot. The bot is made to be used in a workspace where you want to keep track of your crypto transactions. The bot uses the BlockCypher API to fetch information about transactions and addresses. The bot can be used to fetch information about a specific transaction or address.
 
