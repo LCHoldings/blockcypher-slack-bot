@@ -38,7 +38,7 @@
 
 ![Example Usage](screenshots/screenshot1.png)
 
-I made this project to learn more about the Slack API and how to create a Slack bot. The bot is made to be used in a workspace where you want to keep track of your crypto transactions. The bot uses the BlockCypher API to fetch information about transactions and addresses. The bot can be used to fetch information about a specific transaction or address. The bot can also be used to subscribe to a specific address and get updates when a new transaction is made.
+I made this project to learn more about the Slack API and how to create a Slack bot. The bot is made to be used in a workspace where you want to keep track of your crypto transactions. The bot uses the BlockCypher API to fetch information about transactions and addresses. The bot can be used to fetch information about a specific transaction or address.
 
 The code is open-source and can be used by anyone who wants to learn more about the Slack API or how to create a Slack bot. The bot is also available to be added to your workspace if you want to use it using this link or finding it on the Slack marketplace. *still in review as of now*.
 
