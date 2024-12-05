@@ -25,7 +25,6 @@ async function SHA256Checker(hash: string) {
 }
 
 async function FetchTransaction(hash: string, type: string): Promise<Transaction> {
-    console.log(type,hash)
     try {
         const response = await axios.get(`https://api.blockcypher.com/v1/${type}/main/txs/${hash}&includeHex=true`, {
             headers: {
@@ -60,7 +59,6 @@ async function FetchTransactionAdress(address: string, type: string): Promise<Tr
 }
 
 async function checkAdressType(address: string) {
-    console.log(address)
     switch (true) {
         case /^https:\/\/live\.blockcypher\.com\/[a-z]+\/tx\/[a-z0-9]+/.test(address): return FetchTransaction(address.split("/")[5].split("?")[0], address.split("/")[3]); // Blockcypher URL
         case /^(0x)?[0-9a-fA-F]{40}$/.test(address): return FetchTransactionAdress(address, "eth"); // Ethereum adress
@@ -86,7 +84,7 @@ export async function getTransaction(firstParam: string): Promise<Transaction | 
         return transaction || "The adress/hash you sent is not valid or not supported on BlockCypher. https://live.blockcypher.com";
     } catch (error) {
         console.log("Error: " + error);
-        return ("Error :(")
+        return (`Error: ${String(error) || "Could not get error."}`)
     }
 }
 
